@@ -1,0 +1,71 @@
+---
+title: "Technical Assessment"
+author: "Please Insert Name"
+date: "5/1/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r libraries}
+##load any librarys you may need.  tidyverse has already been loaded here for you
+libraries <- c("tidyverse")
+for (l in libraries) {
+  suppressPackageStartupMessages(library(l, character.only = TRUE))
+}
+```
+
+
+## Instructions
+
+This is an assessment project to be completed by prospective candidates looking to apply to the Biometrics Department at Denali Therapeutics.  The assessment is intended to take between 30-60 minutes to complete and is aimed at assessing required technical skills.  Please feel free to include more comprehensive or alternative approaches as you deem fit.  Completed report should be in html format.  Please create a **new github repository** to share your work with us. 
+
+
+
+## Data 
+Start by loading the dataset Theoph.  This is data relating to a  pharmacokinetics experiment of the anti-asthmatic drug theophylline.  
+
+
+```{r DataLoad}
+data(Theoph)
+```
+
+To add a bit more complexity, we will introduce a hypothetical demographics dataset characterizing the subjects.
+
+```{r demographics}
+
+##please add any corresponding data cleanup as needed
+dm <- read.csv("dm.csv")
+
+```
+
+**Please characterize and provide a summary of the data stratefied by gender.**
+
+*Hint:  Don't forget to also include characterization of age, weight and peak concentrations.*
+
+```{r summary}
+##input characterization and summary data code here.
+
+
+
+```
+
+## Visualization
+
+You need to convey the data in a presentation.  Please generate figures to convey the data we have captured.  Pay particular attention to showing concentration change over time as this is a PK experiment.  Please take time to make the figure as informative as possible. Feel free to use more than one figure if needed but bear in mind that this is a presentation so fewer figures to convey the information is a plus.  Bonus points for interactivity!
+
+
+```{r visualization}
+##input visualization code here
+
+
+```
+
+## Analysis
+Next, we would like to estimate the PK property, area under the curve (AUC), for the drug based on the available data.  Please provide an **estimate** along with **associated variability**.  Explain in detail any imputations or assumptions that were made.  
+
+```{r AUC}
+##input code for estimating AUC here.
+
+```
