@@ -29,6 +29,7 @@ Start by loading the dataset Theoph.  This is data relating to a  pharmacokineti
 
 ```{r DataLoad}
 data(Theoph)
+head(Theoph)
 ```
 
 To add a bit more complexity, we will introduce a hypothetical demographics dataset characterizing the subjects.
@@ -40,6 +41,7 @@ dm <- read.csv("dm.csv")
 library('tidyverse')
 ##please add any corresponding data cleanup as needed
 dm <- read.csv("dm.csv")
+dm <- as.data.frame(dm)
 dm1 <- dm %>% 
   mutate_if(is.factor, as.character) %>%  
   mutate(SEX, Sex = str_sub(SEX, start = 1, end = 1)) %>% 
@@ -66,9 +68,13 @@ head(th_dm)
 *Hint:  Don't forget to also include characterization of age, weight and peak concentrations.*
 
 ```{r summary}
-##input characterization and summary data code here.
-
-
+#input characterization and summary data code here.
+th_dm %>% 
+  group_by(Sex) %>%
+  summarise(age_mean = mean(age), age_sd = sd(age),
+            wt_mean = mean(Wt), wt_sd = sd(Wt),
+            dose_mean = mean(Dose), dose_sd = sd(Dose),
+            con_peak = max(conc))
 
 ```
 
