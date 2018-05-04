@@ -55,9 +55,10 @@ dm_clean <- dm1 %>%
   mutate(age = round(age, 1)) %>% 
   filter(age <= 150)
 
+# Join the two datasets together
 th_dm <- dm_clean %>% 
   inner_join(Theoph, by = c("SUBJECT" = "Subject"))
-
+head(th_dm)
 ```
 
 **Please characterize and provide a summary of the data stratefied by gender.**
