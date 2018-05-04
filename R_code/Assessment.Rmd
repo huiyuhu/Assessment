@@ -37,7 +37,16 @@ To add a bit more complexity, we will introduce a hypothetical demographics data
 
 ##please add any corresponding data cleanup as needed
 dm <- read.csv("dm.csv")
-
+library('tidyverse')
+##please add any corresponding data cleanup as needed
+dm <- read.csv("dm.csv")
+dm1 <- dm %>% 
+  mutate_if(is.factor, as.character) %>%  
+  mutate(SEX, Sex = str_sub(SEX, start = 1, end = 1)) %>% 
+  select(-SEX) %>%
+  mutate(num = parse_number(Age)) %>%
+  mutate(is.month = str_detect(Age, regex('month', ignore_case = T))) %>%
+  mutate(is.week = str_detect(Age, regex('week', ignore_case = T))) 
 ```
 
 **Please characterize and provide a summary of the data stratefied by gender.**
