@@ -47,14 +47,16 @@ dm1 <- dm %>%
   mutate(num = parse_number(Age)) %>%
   mutate(is.month = str_detect(Age, regex('month', ignore_case = T))) %>%
   mutate(is.week = str_detect(Age, regex('week', ignore_case = T))) 
-
 dm_clean <- dm1 %>% 
   mutate(age = case_when(is.month ~ (num/12),
                       is.week ~ (num/52),
                       !is.month & !is.week ~ num)) %>%
   select(-num, -is.month, -is.week, -Age) %>%
-  mutate(age = round(age, 1)) %>%
+  mutate(age = round(age, 1)) %>% 
   filter(age <= 150)
+
+th_dm <- dm_clean %>% 
+  inner_join(Theoph, by = c("SUBJECT" = "Subject"))
 
 ```
 
