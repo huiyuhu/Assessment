@@ -52,8 +52,9 @@ dm_clean <- dm1 %>%
   mutate(age = case_when(is.month ~ (num/12),
                       is.week ~ (num/52),
                       !is.month & !is.week ~ num)) %>%
-  select(-num, -is.month, -is.week, -Age) 
-
+  select(-num, -is.month, -is.week, -Age) %>%
+  mutate(age = round(age, 1)) %>%
+  filter(age <= 150)
 
 ```
 
