@@ -85,7 +85,10 @@ You need to convey the data in a presentation.  Please generate figures to conve
 
 ```{r visualization}
 ##input visualization code here
-
+th_dm %>% 
+  ggplot(aes(Time, conc)) +
+  geom_point(aes(group = SUBJECT, colour = SUBJECT)) + 
+  geom_smooth(color = "orange", method = "loess")
 
 ```
 
