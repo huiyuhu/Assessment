@@ -61,6 +61,8 @@ dm_clean <- dm1 %>%
 th_dm <- dm_clean %>% 
   inner_join(Theoph, by = c("SUBJECT" = "Subject"))
 head(th_dm)
+
+write_rds(th_dm, "Theoph_shiny/th_dm.rds")
 ```
 
 **Please characterize and provide a summary of the data stratefied by gender.**
@@ -82,7 +84,7 @@ th_dm %>%
 
 You need to convey the data in a presentation.  Please generate figures to convey the data we have captured.  Pay particular attention to showing concentration change over time as this is a PK experiment.  Please take time to make the figure as informative as possible. Feel free to use more than one figure if needed but bear in mind that this is a presentation so fewer figures to convey the information is a plus.  Bonus points for interactivity!
 
-
+** Method 1: Use ggplot to visualize the PK experiment.**
 ```{r visualization}
 ##input visualization code here
 th_dm %>% 
@@ -93,6 +95,11 @@ th_dm %>%
        y = "theophylline concentration in the sample (mg/L)")
 
 ```
+** Method 2: Use Shiny APP, to visualize the interactive plot.**
+
+The link: https://huiyuhu.shinyapps.io/pkexp_shiny/
+* `Subject Overall information` showed that the all points and loess line. Click the point can see the the detail information correspondingly.
+* `Each Subject information` showed that the plot of each subject and the table of each subject. 
 
 ## Analysis
 Next, we would like to estimate the PK property, area under the curve (AUC), for the drug based on the available data.  Please provide an **estimate** along with **associated variability**.  Explain in detail any imputations or assumptions that were made.  
