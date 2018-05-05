@@ -21,7 +21,7 @@ for (l in libraries) {
 
 This is an assessment project to be completed by prospective candidates looking to apply to the Biometrics Department at Denali Therapeutics.  The assessment is intended to take between 30-60 minutes to complete and is aimed at assessing required technical skills.  Please feel free to include more comprehensive or alternative approaches as you deem fit.  Completed report should be in html format.  Please create a **new github repository** to share your work with us. 
 
-
+* Please find the code at https://github.com/huiyuhu/Clinical_Data_Scientist_Intern
 
 ## Data 
 Start by loading the dataset Theoph.  This is data relating to a  pharmacokinetics experiment of the anti-asthmatic drug theophylline.  
