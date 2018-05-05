@@ -116,4 +116,9 @@ con2 <- as.vector(colMeans(con_m2))
 auc(conc = con2, time = time1, 
     method=c("t"), design=c("complete"))
 
+# Method 3: With variance
+# Repeat the dataset twice to make the auc computation successful
+result <- auc(conc = rep(th_dm$conc, 2), time = rep(th_dm$Time, 2), method = c("z", "t"), design = "ssd")
+print(result)
+summary(result)
 ```
