@@ -99,5 +99,21 @@ Next, we would like to estimate the PK property, area under the curve (AUC), for
 
 ```{r AUC}
 ##input code for estimating AUC here.
+library("PK")
+th_dm <- as.data.frame(th_dm)
+#Method 1: use mean of conc
+con_m1 <- matrix(unlist(th_dm$conc), ncol = 11, byrow = TRUE)
+time_m1 <- matrix(unlist(th_dm$Time), ncol = 11, byrow = TRUE)
+con1 <- as.vector(colMeans(con_m1)) 
+time1 <- as.vector(colMeans(time_m1)) 
+auc(conc = con1, time = time1, 
+    method=c("t"), design=c("complete"))
+
+#Method 2: use loess predcted value
+smooth_vals = predict(loess(th_dm$conc ~ th_dm$Time), th_dm, normalize = T)
+con_m2 <- matrix(unlist(smooth_vals), ncol = 11, byrow = TRUE)
+con2 <- as.vector(colMeans(con_m2)) 
+auc(conc = con2, time = time1, 
+    method=c("t"), design=c("complete"))
 
 ```
