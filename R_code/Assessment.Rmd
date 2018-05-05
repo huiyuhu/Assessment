@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r libraries}
 ##load any librarys you may need.  tidyverse has already been loaded here for you
-libraries <- c("tidyverse")
+libraries <- c("tidyverse", "PK")
 for (l in libraries) {
   suppressPackageStartupMessages(library(l, character.only = TRUE))
 }
@@ -118,7 +118,7 @@ Next, we would like to estimate the PK property, area under the curve (AUC), for
 
 ```{r AUC}
 ##input code for estimating AUC here.
-library("PK")
+ 
 th_dm <- as.data.frame(th_dm)
 #Method 1: use mean of conc
 con_m1 <- matrix(unlist(th_dm$conc), ncol = 11, byrow = TRUE)
