@@ -1,7 +1,7 @@
 ---
 title: "Technical Assessment"
-author: "Please Insert Name"
-date: "5/1/2018"
+author: "Huiyu (Joyce) Hu"
+date: "5/4/2018"
 output: html_document
 ---
 
@@ -58,6 +58,7 @@ dm_clean <- dm1 %>%
   filter(age <= 150)
 
 # Join the two datasets together
+Theoph$Subject <- as.integer(Theoph$Subject)
 th_dm <- dm_clean %>% 
   inner_join(Theoph, by = c("SUBJECT" = "Subject"))
 head(th_dm)
@@ -77,8 +78,17 @@ th_dm %>%
             wt_mean = mean(Wt), wt_sd = sd(Wt),
             dose_mean = mean(Dose), dose_sd = sd(Dose),
             con_peak = max(conc))
-
+th_dm %>% 
+  select(SUBJECT, age, Wt, Dose, Sex) %>%
+  group_by(SUBJECT) %>%
+  distinct(age, Wt, Dose, Sex) %>%
+  group_by(Sex) %>%
+  summarise(age_mean = mean(age), age_sd = sd(age),
+            wt_mean = mean(Wt), wt_sd = sd(Wt),
+            dose_mean = mean(Dose), dose_sd = sd(Dose))
 ```
+
+* The table 1 above showed the data chracterization of age, weight, dose, and peak concentration by using the joint data, but since the age, weight and dose were repeated 11 times, the standard deviations were underestimated. To make the result more precise, table 2 showed the result by using data without repeatation. 
 
 ## Visualization
 
@@ -95,6 +105,8 @@ th_dm %>%
        y = "theophylline concentration in the sample (mg/L)")
 
 ```
+
+* Overall pattern: Concentration increase with the time at first then start decrease after ~4 hours (peak).
 ** Method 2: Use Shiny APP, to visualize the interactive plot.**
 
 The link: https://huiyuhu.shinyapps.io/pkexp_shiny/
@@ -129,3 +141,7 @@ result <- auc(conc = rep(th_dm$conc, 2), time = rep(th_dm$Time, 2), method = c("
 print(result)
 summary(result)
 ```
+* Method 1: Calculate the mean of each time spot to calculate the AUC. ** Result: 104.87 **
+* Method 2: Get the loess line predicted value to calculate the AUC. **Result: 104.40 **
+* Method 3: Since the auc function needs at least 2 data at each time point, the data was repeated twice, which could underestimate the variance. This repeat could be avoided when the dataset is larger.
+
