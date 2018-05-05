@@ -36,17 +36,17 @@ To add a bit more complexity, we will introduce a hypothetical demographics data
 
 ```{r demographics}
 
-##please add any corresponding data cleanup as needed
-dm <- read.csv("dm.csv")
-library('tidyverse')
-##please add any corresponding data cleanup as needed
+## data cleanup and preprocessing
 dm <- read.csv("dm.csv")
 dm <- as.data.frame(dm)
 dm1 <- dm %>% 
   mutate_if(is.factor, as.character) %>%  
+  # Step 1: For sex, only select the first character
   mutate(SEX, Sex = str_sub(SEX, start = 1, end = 1)) %>% 
   select(-SEX) %>%
+  # Step 2: Age data is noisy. The goal is transform all types of age data to "years"
   mutate(num = parse_number(Age)) %>%
+  # Step 2.1: Transform months and weeks to years
   mutate(is.month = str_detect(Age, regex('month', ignore_case = T))) %>%
   mutate(is.week = str_detect(Age, regex('week', ignore_case = T))) 
 dm_clean <- dm1 %>% 
@@ -55,7 +55,8 @@ dm_clean <- dm1 %>%
                       !is.month & !is.week ~ num)) %>%
   select(-num, -is.month, -is.week, -Age) %>%
   mutate(age = round(age, 1)) %>% 
-  filter(age <= 150)
+  # Step 2.2: Filter out abnormal/incorrect age range
+  filter(age > 0 & age <= 150)
 
 # Join the two datasets together
 Theoph$Subject <- as.integer(Theoph$Subject)
@@ -71,13 +72,15 @@ write_rds(th_dm, "Theoph_shiny/th_dm.rds")
 *Hint:  Don't forget to also include characterization of age, weight and peak concentrations.*
 
 ```{r summary}
-#input characterization and summary data code here.
+# characterization and summary data
+# Summary 1
 th_dm %>% 
   group_by(Sex) %>%
   summarise(age_mean = mean(age), age_sd = sd(age),
             wt_mean = mean(Wt), wt_sd = sd(Wt),
             dose_mean = mean(Dose), dose_sd = sd(Dose),
             con_peak = max(conc))
+# Summary 2
 th_dm %>% 
   select(SUBJECT, age, Wt, Dose, Sex) %>%
   group_by(SUBJECT) %>%
@@ -88,13 +91,14 @@ th_dm %>%
             dose_mean = mean(Dose), dose_sd = sd(Dose))
 ```
 
-* The table 1 above showed the data chracterization of age, weight, dose, and peak concentration by using the joint data, but since the age, weight and dose were repeated 11 times, the standard deviations were underestimated. To make the result more precise, table 2 showed the result by using data without repeatation. 
+* The table 1 above showed the data chracterization of age, weight, dose, and peak concentration by using the joint data, but since the age, weight and dose were repeated 11 times, the standard deviations were underestimated. 
+* To make the result more precise, table 2 showed the result by using data without repeatation. 
 
 ## Visualization
 
 You need to convey the data in a presentation.  Please generate figures to convey the data we have captured.  Pay particular attention to showing concentration change over time as this is a PK experiment.  Please take time to make the figure as informative as possible. Feel free to use more than one figure if needed but bear in mind that this is a presentation so fewer figures to convey the information is a plus.  Bonus points for interactivity!
 
-** Method 1: Use ggplot to visualize the PK experiment.**
+**Method 1: Use ggplot to visualize the PK experiment.**
 ```{r visualization}
 ##input visualization code here
 th_dm %>% 
@@ -107,9 +111,11 @@ th_dm %>%
 ```
 
 * Overall pattern: Concentration increase with the time at first then start decrease after ~4 hours (peak).
-** Method 2: Use Shiny APP, to visualize the interactive plot.**
+
+**Method 2: Use Shiny App to visualize the interactive plot.**
 
 The link: https://huiyuhu.shinyapps.io/pkexp_shiny/
+
 * `Subject Overall information` showed that the all points and loess line. Click the point can see the the detail information correspondingly.
 * `Each Subject information` showed that the plot of each subject and the table of each subject. 
 
@@ -141,7 +147,7 @@ result <- auc(conc = rep(th_dm$conc, 2), time = rep(th_dm$Time, 2), method = c("
 print(result)
 summary(result)
 ```
-* Method 1: Calculate the mean of each time spot to calculate the AUC. ** Result: 104.87 **
+* Method 1: Calculate the mean of each time spot to calculate the AUC. **Result: 104.87 **
 * Method 2: Get the loess line predicted value to calculate the AUC. **Result: 104.40 **
 * Method 3: Since the auc function needs at least 2 data at each time point, the data was repeated twice, which could underestimate the variance. This repeat could be avoided when the dataset is larger.
 
